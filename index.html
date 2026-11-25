@@ -143,7 +143,7 @@ label.opt input{accent-color:#c0c0c0}
 
   <!-- STEP 4: RESULT -->
   <section id="step4" class="hidden">
-    <h2>Your estimate</h2>
+    <h2>Your estimate</h2><div id="sendStatus4"></div>
     <div class="card"><div class="body">
       <div class="name" id="sumPkg"></div>
       <div class="from" id="sumTotal"></div>
@@ -345,7 +345,7 @@ function summaryText(){
 
 function sendPricing(){
   const btn = document.getElementById("sendBtn");
-  const status = document.getElementById("sendStatus");
+  const status = document.getElementById("sendStatus4");
   const s = summaryText();
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
@@ -372,8 +372,8 @@ function sendPricing(){
   }).then(() => {
     status.innerHTML = `<div class="status ok">Sent to ${email}. Check your inbox.</div>`;
     show("step4");
-  }).catch(() => {
-    status.innerHTML = `<div class="status bad">We couldn't send the email. Your estimate is shown below. Please call us to get it.</div>`;
+  }).catch((err) => { console.error("EmailJS error", err);
+    status.innerHTML = `<div class="status bad">We couldn't send the email. Your estimate is shown below. Please call us to get it.<br><small>${(err && (err.text || err.message)) || JSON.stringify(err)}</small></div>`;
     show("step4");
   }).finally(() => { btn.disabled = false; btn.textContent = "SEE PRICING"; });
 }
