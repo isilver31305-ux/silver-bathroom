@@ -206,7 +206,7 @@ const EMAILJS_TEMPLATE_ID = "template_9usqi1w";   // template must use {{to_emai
    conflicts: picking this option unchecks the listed option ids */
 const PACKAGES = {
   tub: {
-    name: "Tub to Walk in Shower", base: 12444, timeline: "Finished in days", tag: "Most popular", fine: "Standard 5x8–5x10 bathrooms. 60 inch wet area, up to 36 in.", img: "photos/pkg-tub-to-shower.jpg",
+    name: "Tub to Walk in Shower", base: 12444, was: 16200, timeline: "Finished in days", tag: "Most popular", fine: "Standard 5x8–5x10 bathrooms. 60 inch wet area, up to 36 in.", img: "photos/pkg-tub-to-shower.jpg",
     desc: "Tub out, walk-in shower in. Days, not months.",
     included: ["Tub and surround removal, with haul-away", "Custom shower pan built to your footprint",
                "Sentrel panel walls, grout-free joints", "Waterproofing behind the walls", "Frameless sliding glass enclosure", "High-quality Delta valves"],
@@ -222,7 +222,7 @@ const PACKAGES = {
     ]
   },
   full: {
-    name: "Full Bathroom Renovation", base: 16592, timeline: "About 7–10 days", tag: "Hall bath", fine: "Standard 5x8–5x10 bathrooms. 60 inch wet area, up to 36 in.", img: "photos/pkg-full.jpg",
+    name: "Full Bathroom Renovation", base: 16592, was: 18920, timeline: "About 7–10 days", tag: "Hall bath", fine: "Standard 5x8–5x10 bathrooms. 60 inch wet area, up to 36 in.", img: "photos/pkg-full.jpg",
     desc: "Every surface new. One crew, one price, about a week.",
     included: ["Everything in the Tub-to-Shower Package", "Full room demolition with haul-away",
                "Glacier Bay vanity, countertop, undermount sink, matching faucet, chosen from our Glacier Bay selection", "Comfort-height, water-saving toilet installed and sealed",
@@ -241,7 +241,7 @@ const PACKAGES = {
     ]
   },
   primary: {
-    name: "Master Bath Package", base: 32147, timeline: "About 15 working days", tag: "Primary suites", fine: "Standard 5x8–5x10 bathrooms. 60 inch wet area, up to 36 in.", img: "photos/pkg-primary.jpg",
+    name: "Master Bath Package", base: 32147, was: 37201, timeline: "About 15 working days", tag: "Primary suites", fine: "Standard 5x8–5x10 bathrooms. 60 inch wet area, up to 36 in.", img: "photos/pkg-primary.jpg",
     desc: "The biggest room upgrade in the house.",
     included: ["Full demolition to a clean shell, with haul-away", "Custom tile shower, floor to ceiling, with waterproofing",
                "Recessed storage niche and Glacier Bay double-sink vanity, chosen from our Glacier Bay selection", "Comfort-height toilet installed and sealed",
@@ -280,6 +280,7 @@ function renderPackages(){
       <div class="body">
         <div class="row"><div class="name">${p.name}</div><div>${p.tag ? `<span class="pill">${p.tag}</span>` : ""}</div></div>
         <div><span class="pill">${p.timeline}</span></div>
+        <div style="margin:6px 0 2px;font-size:15px"><span style="text-decoration:line-through;color:#999">$${p.was.toLocaleString()}</span> <strong style="font-size:20px">From $${p.base.toLocaleString()}</strong></div>
         <div class="desc">${p.desc}</div>
         ${p.fine ? `<div class="note">${p.fine}</div>` : ""}
         <ul style="padding-left:18px;font-size:14px;margin:8px 0">${p.included.map(i=>`<li>${i}</li>`).join("")}</ul>
