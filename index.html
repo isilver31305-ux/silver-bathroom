@@ -144,7 +144,7 @@ label.opt input{accent-color:#c0c0c0}
       <div class="field"><label for="phone">Phone</label><input id="phone" type="tel" required autocomplete="tel"></div>
       <div class="field"><label for="address">Zip code of the bathroom</label><input id="address" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" placeholder="e.g. 70001"></div>
       <div class="field"><label for="notes">Anything we should know?</label><textarea id="notes" rows="3"></textarea></div>
-      <div class="note">By submitting your information, you agree that Silver Construction may call or email you at the phone number and email address you provided, about your estimate and your project.</div>
+      <label style="display:flex;gap:10px;align-items:flex-start;margin:6px 0 14px;font-size:13px;line-height:1.5;cursor:pointer"><input type="checkbox" id="consent" style="margin-top:3px;width:18px;height:18px;flex:0 0 auto"><span>I agree that Silver Construction may contact me about my estimate and related offers by phone, email, and text message at the number and address I provided, including with automated technology. Consent is not a condition of purchase. Message and data rates may apply. Reply STOP to end texts. Optional. See our <a href="privacy.html" style="color:#fff">Privacy Policy</a>.</span></label>
       <button type="submit" id="sendBtn">SEE PRICING</button>
     </form>
     <div id="sendStatus"></div>
@@ -163,7 +163,7 @@ label.opt input{accent-color:#c0c0c0}
   </section>
 </main>
 <footer style="max-width:640px;margin:0 auto;padding:16px;color:#999;font-size:13px;text-align:center;border-top:1px solid #333">
-  (504) 261-8542 · Louisiana Residential License RL.89598
+  (504) 261-8542 · Louisiana Residential License RL.89598 · <a href="privacy.html" style="color:inherit">Privacy Policy</a>
 </footer>
 
 <script>
@@ -408,6 +408,7 @@ function sendPricing(){
   emailjs.init(EMAILJS_PUBLIC_KEY);
   emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
     to_email: email, to_name: name, phone, address, notes,
+    marketing_consent: document.getElementById("consent").checked ? "Yes - may contact by phone, email and text" : "No",
     package: s.package, options: s.options, total: s.total,
     cash: s.cash, monthly: s.monthly, financing_terms: "Estimate only, not a loan offer or a guarantee of financing. Subject to credit approval by the lender, and a down payment may be required. The 9.9% APR and 84-month term are examples only; your actual rate, term, and payment are set by the lender and may differ."
   }).then(() => {
