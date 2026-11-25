@@ -296,7 +296,7 @@ function renderPackages(){
       <div class="body">
         <div class="row"><div class="name">${p.name}</div></div>
         <div><span class="pill">${p.timeline}</span></div>
-        <div style="margin:6px 0 2px;font-size:15px"><strong style="font-size:24px;letter-spacing:2px">${({tub:"\$", full:"\$\$", primary:"\$\$\$\$"})[key]}</strong></div>
+        <div style="margin:6px 0 2px;font-size:15px"><strong style="font-size:24px;letter-spacing:2px">${({tub:"Budget-friendly", full:"Mid-range", primary:"Premium"})[key]}</strong></div>
         <div class="desc">${p.desc}</div>
         ${p.fine ? `<div class="note">${p.fine}</div>` : ""}
         <ul style="padding-left:18px;font-size:14px;margin:8px 0">${p.included.slice(0,4).map(i=>`<li>${i}</li>`).join("")}</ul>${p.included.length>4 ? `<details style="font-size:14px;margin:0 0 10px"><summary style="cursor:pointer">See what's included</summary><ul style="padding-left:18px;margin:6px 0">${p.included.slice(4).map(i=>`<li>${i}</li>`).join("")}</ul></details>` : ""}
