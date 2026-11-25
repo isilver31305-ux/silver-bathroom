@@ -284,7 +284,11 @@ function money(n){ return (n < 0 ? "−" : "") + "$" + Math.abs(n).toLocaleStrin
 
 function show(step){
   ["about","step1","finish","master","step2","step3","step4"].forEach(s => document.getElementById(s).classList.toggle("hidden", s !== step));
-  window.scrollTo(0,0);
+  if (step === "step1") {
+    document.getElementById("step1").scrollIntoView({behavior:"smooth", block:"start"});
+  } else {
+    window.scrollTo(0,0);
+  }
 }
 
 function renderPackages(){
