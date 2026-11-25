@@ -55,7 +55,7 @@ main{max-width:760px}
 #packages .card img{height:300px}
 #packages .body{padding:22px 24px}
 #packages .name{font-size:24px}
-#packages li{font-size:16px;margin-bottom:4px}
+#packages li{font-size:16px;margin-bottom:4px;color:#ffffff}
 #packages button{padding:18px;font-size:17px}
 label.opt input{accent-color:#c0c0c0}
 .field label{color:#c0c0c0}
@@ -102,6 +102,8 @@ label.opt input{accent-color:#c0c0c0}
     <div id="styles" class="pickrow"></div>
     <h2 style="margin-top:22px">How long have you been thinking about renovating?</h2>
     <div id="timeline" class="pickrow"></div>
+    <h2 style="margin-top:22px">When would you like to get started on your project?</h2>
+    <div id="start" class="pickrow"></div>
     <div id="finishMsg" class="muted" style="margin-top:10px"></div>
     <button onclick="goOptions()" style="margin-top:14px">Continue</button>
   </section>
@@ -165,10 +167,10 @@ const PACKAGES = {
     name: "Standard Tub to Walk in Shower", base: 12444, timeline: "Finished in days", tag: "Most popular", fine: "Standard 5x8–5x10 bathrooms. 60 inch wet area, up to 36 in.", img: "photos/pkg-tub-to-shower.jpg",
     desc: "Tub out, walk-in shower in. Days, not months.",
     included: ["Tub and surround removal, with haul-away", "Custom shower pan built to your footprint",
-               "FlexStone panel walls, grout-free joints", "Waterproofing behind the walls", "Frameless sliding glass enclosure", "High-quality Delta valves"],
+               "Sentrel panel walls, grout-free joints", "Waterproofing behind the walls", "Frameless sliding glass enclosure", "High-quality Delta valves"],
     options: [
       {id:"fulltile", name:"Full tile walls", desc:"Tile on the shower walls instead of panels<br><small style='font-size:12px;opacity:.85'>Tile sizes: 12x24 and 24x48. Tile or regular walls up to 8 ft x 60 in.</small>", price:3630, img:"photos/tub-fulltile.jpg"},
-      {id:"schluter", name:"Upgraded waterproofing for limited lifetime warranty and extra 5 yr workmanship warranty", desc:"Schluter edging and Kerdi backing and waterproofing.", price:1311, img:"", tileOnly:true},
+      {id:"schluter", name:"Upgraded waterproofing for limited lifetime warranty and extra 5 yr workmanship warranty", desc:"Schluter edging and Kerdi backing and waterproofing.<br><small style='font-size:12px;opacity:.85'>Warranty applies when the full Schluter system is installed with Schluter thin-set mortar (Schluter-SET, Schluter-ALL-SET, or Schluter-FAST-SET).</small>", price:1311, img:"", tileOnly:true},
       {id:"floor", name:"New bathroom floor (LVP)", desc:"Waterproof luxury vinyl plank (LVP) flooring for the whole room, up to 45 sq ft", price:1535, img:"photos/tub-floor.jpg", conflicts:["fresh"]},
       {id:"toilet", name:"New toilet", desc:"Comfort-height, water-saving, installed and sealed", price:726, img:"photos/tub-toilet.jpg", conflicts:["fresh"]},
       {id:"fresh", name:"Fresh Finish Bundle", desc:"New floor and new toilet in one visit", price:1950, img:"photos/tub-fresh.jpg", conflicts:["floor","toilet"]},
@@ -185,7 +187,7 @@ const PACKAGES = {
                "Waterproof plank flooring, wall to wall", "Mirror, lighting, and ventilation", "High-quality Delta valves"],
     options: [
       {id:"fulltile", name:"Full tile walls", desc:"Tile on the shower walls instead of panels<br><small style='font-size:12px;opacity:.85'>Tile sizes: 12x24 and 24x48. Tile or regular walls up to 8 ft x 60 in.</small>", price:3630, img:"photos/full-fulltile.jpg"},
-      {id:"schluter", name:"Upgraded waterproofing for limited lifetime warranty and extra 5 yr workmanship warranty", desc:"Schluter edging and Kerdi backing and waterproofing.", price:1311, img:"", tileOnly:true},
+      {id:"schluter", name:"Upgraded waterproofing for limited lifetime warranty and extra 5 yr workmanship warranty", desc:"Schluter edging and Kerdi backing and waterproofing.<br><small style='font-size:12px;opacity:.85'>Warranty applies when the full Schluter system is installed with Schluter thin-set mortar (Schluter-SET, Schluter-ALL-SET, or Schluter-FAST-SET).</small>", price:1311, img:"", tileOnly:true},
       {id:"tileFloor", name:"Tile flooring instead of plank", desc:"Tile across the whole room", price:726, img:"photos/full-tilefloor.jpg"},
       {id:"vanity2", name:"Double-sink vanity", desc:"Glacier Bay two-sink vanity with extra storage, chosen from our Glacier Bay selection", price:1556, img:"photos/full-vanity.jpg"},
       {id:"recessed", name:"Recessed lighting package", desc:"Three to four ceiling lights on their own switch", price:1970, img:"photos/full-lighting.jpg", conflicts:["bundle"]},
@@ -203,13 +205,11 @@ const PACKAGES = {
                "Recessed storage niche and Glacier Bay double-sink vanity, chosen from our Glacier Bay selection", "Comfort-height toilet installed and sealed",
                "Tile flooring over a leveled, prepped subfloor", "Recessed ceiling lighting and vented exhaust fan", "Full painting and coordinated hardware", "High-quality Delta valves"],
     options: [
-      {id:"flex", name:"FlexStone walls instead of tile", desc:"Panel walls instead of tile in the shower", price:-4148, img:"photos/primary-flex.jpg"},
-      {id:"reshape", name:"Reshape the wet zone", desc:"Expand the shower, add a curbless entry, or move one fixture", price:2593, img:"photos/primary-reshape.jpg", excl:"layout"},
-      {id:"reconfig", name:"Full reconfiguration", desc:"Move or change all fixtures to a new layout", price:8815, img:"photos/primary-reconfig.jpg", excl:"layout"},
-      {id:"modernize", name:"Modernize existing tub", desc:"New tiled deck around the current tub", price:2074, img:"photos/primary-modernize.jpg", excl:"tub"},
+      {id:"flex", name:"Sentrel walls instead of tile", desc:"Panel walls instead of tile in the shower", price:-4148, img:"photos/primary-flex.jpg"},
+      {id:"reshape", name:"Reshape the wet zone", desc:"Expand the shower", price:2593, img:"photos/primary-reshape.jpg", excl:"layout"},
       {id:"freestanding", name:"Freestanding soaking tub", desc:"With floor-mounted filler", price:4148, img:"photos/primary-freestanding.jpg", excl:"tub"},
       {id:"shower2", name:"Second shower system", desc:"Second showerhead and valve", price:2281, img:"photos/primary-shower2.jpg"},
-      {id:"schluter", name:"Upgraded waterproofing for limited lifetime warranty and extra 5 yr workmanship warranty", desc:"Schluter edging and Kerdi backing and waterproofing.", price:1311, img:"", tileOnly:true},
+      {id:"schluter", name:"Upgraded waterproofing for limited lifetime warranty and extra 5 yr workmanship warranty", desc:"Schluter edging and Kerdi backing and waterproofing.<br><small style='font-size:12px;opacity:.85'>Warranty applies when the full Schluter system is installed with Schluter thin-set mortar (Schluter-SET, Schluter-ALL-SET, or Schluter-FAST-SET).</small>", price:1311, img:"", tileOnly:true},
       {id:"niche", name:"Extra storage niche", desc:"Framed, waterproofed, and tiled", price:881, img:"photos/primary-niche.jpg"},
       {id:"bench", name:"Built-in tiled bench", desc:"Framed and waterproofed seat", price:778, img:"photos/primary-bench.jpg"},
       {id:"glass", name:"Custom cut glass", desc:"<small style='font-size:12px'>Pivoting frameless door, laser measured and custom cut, with no bottom track for a cleaner look.</small>", price:1867, img:"photos/primary-glass.jpg"}
@@ -239,7 +239,7 @@ function renderPackages(){
         <div class="desc">${p.desc}</div>
         ${p.fine ? `<div class="note">${p.fine}</div>` : ""}
         <ul style="padding-left:18px;font-size:14px;margin:8px 0">${p.included.map(i=>`<li>${i}</li>`).join("")}</ul>
-        <button onclick="choose('${key}')">Choose this package</button>
+        <button onclick="choose('${key}')" style="background:#2e7d32;color:#fff">Choose this package</button>
       </div>
     </div>`).join("");
 }
@@ -309,6 +309,8 @@ function updateTotal(){
 /* ===== FINISH AND TIMELINE ===== */
 const FINISHES = ["Chrome", "Brushed Nickel", "Matte Black"];
 const TIMELINES = ["1–3 months", "3–8 months", "8–24 months"];
+const START_OPTIONS = ["As soon as possible", "3–6 months", "Just checking for prices"];
+let startWhen = null;
 const STYLES = ["White", "Grey", "Blue", "Brown"];
 const FINISH_COLORS = {"Chrome":["#ffffff","#000"],"Brushed Nickel":["#3a3a3a","#fff"],"Matte Black":["#1a1a1a","#fff"]};
 const STYLE_COLORS = {"White":["#ffffff","#000"],"Grey":["#5a6b7b","#fff"],"Blue":["#1f6fb2","#fff"],"Brown":["#8b5a2b","#fff"]};
@@ -322,13 +324,16 @@ function renderFinish(){
     `<button class="choice ${bathStyle === s ? "on" : ""}" style="--c:${STYLE_COLORS[s][0]};--t:${STYLE_COLORS[s][1]}" onclick="setStyle('${s}')">${s}</button>`).join("");
   document.getElementById("timeline").innerHTML = TIMELINES.map(t =>
     `<button class="choice ${timeframe === t ? "on" : ""}" style="--c:#2e7d32;--t:#fff" onclick="setTime('${t}')">${t}</button>`).join("");
+  document.getElementById("start").innerHTML = START_OPTIONS.map(t =>
+    `<button class="choice ${startWhen === t ? "on" : ""}" style="--c:#2e7d32;--t:#fff" onclick="setStart('${t}')">${t}</button>`).join("");
 }
+function setStart(t){ startWhen = t; document.getElementById("finishMsg").textContent = ""; renderFinish(); }
 function setFinish(f){ finish = f; document.getElementById("finishMsg").textContent = ""; renderFinish(); }
 function setStyle(s){ bathStyle = s; document.getElementById("finishMsg").textContent = ""; renderFinish(); }
 function setTime(t){ timeframe = t; document.getElementById("finishMsg").textContent = ""; renderFinish(); }
 function goOptions(){
-  if (!finish || !bathStyle || !timeframe){
-    document.getElementById("finishMsg").textContent = "Please choose a finish, a style color, and a timeframe to continue.";
+  if (!finish || !bathStyle || !timeframe || !startWhen){
+    document.getElementById("finishMsg").textContent = "Please choose a finish, a style color, a timeframe, and a start time to continue.";
     return;
   }
   renderOptions();
@@ -346,7 +351,7 @@ function summaryText(){
   const lines = selectedOptions().map(o => `${o.name} (${money(o.price)})`);
   return {
     package: `${p.name} from ${money(p.base)}`,
-    options: `Finish: ${finish}. Style: ${bathStyle}. Timeline: ${timeframe}. ` + (lines.length ? lines.join("; ") : "No add-ons selected"),
+    options: `Finish: ${finish}. Style: ${bathStyle}. Timeline: ${timeframe}. Start: ${startWhen}. ` + (lines.length ? lines.join("; ") : "No add-ons selected"),
     total: money(totalNow())
   };
 }
