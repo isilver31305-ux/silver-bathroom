@@ -86,6 +86,7 @@ label.opt input{accent-color:#c0c0c0}
 /* ---- site polish: hover, entry, photo zoom (no tilt, carousels or auto-rotation) ---- */
 @keyframes heroIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 #about{animation:heroIn .6s ease-out both;min-height:calc(100vh - 110px);display:flex;flex-direction:column;justify-content:center}
+#about.hidden{display:none}
 #about .card{overflow:hidden}
 #about .card img{transition:transform .5s ease}
 #about .card:hover img{transform:scale(1.03)}
