@@ -206,7 +206,7 @@ const EMAILJS_TEMPLATE_ID = "template_9usqi1w";   // template must use {{to_emai
    conflicts: picking this option unchecks the listed option ids */
 const PACKAGES = {
   tub: {
-    name: "Tub to Walk in Shower", base: 12444, was: 16200, timeline: "Finished in days", tag: "Most popular", fine: "Standard 5x8–5x10 bathrooms. 60 inch wet area, up to 36 in.", img: "photos/pkg-tub-to-shower.jpg",
+    name: "Tub to Walk in Shower", base: 12444, was: 16201, timeline: "Finished in days", tag: "Most popular", fine: "Standard 5x8–5x10 bathrooms. 60 inch wet area, up to 36 in.", img: "photos/pkg-tub-to-shower.jpg",
     desc: "Tub out, walk-in shower in. Days, not months.",
     included: ["Tub and surround removal, with haul-away", "Custom shower pan built to your footprint",
                "Sentrel panel walls, grout-free joints", "Waterproofing behind the walls", "Frameless sliding glass enclosure", "High-quality Delta valves"],
@@ -280,7 +280,7 @@ function renderPackages(){
       <div class="body">
         <div class="row"><div class="name">${p.name}</div><div>${p.tag ? `<span class="pill">${p.tag}</span>` : ""}</div></div>
         <div><span class="pill">${p.timeline}</span></div>
-        <div style="margin:6px 0 2px;font-size:15px"><span style="text-decoration:line-through;color:#999">$${p.was.toLocaleString()}</span> <strong style="font-size:20px">From $${p.base.toLocaleString()}</strong></div>
+        <div style="margin:6px 0 2px;font-size:15px"><span style="text-decoration:line-through;color:#999;font-size:22px">$${p.was.toLocaleString()}</span> <strong style="font-size:20px">From $${p.base.toLocaleString()}</strong></div>
         <div class="desc">${p.desc}</div>
         ${p.fine ? `<div class="note">${p.fine}</div>` : ""}
         <ul style="padding-left:18px;font-size:14px;margin:8px 0">${p.included.map(i=>`<li>${i}</li>`).join("")}</ul>
