@@ -150,7 +150,6 @@ button:active{transform:translateY(1px) scale(.98)}
     <div class="sticky">
       <div>
         <div class="note">Choose one option in each group, or keep the included default.</div>
-        <div class="total" id="masterTotal">$0</div>
       </div>
       <button style="width:auto;padding:12px 18px" onclick="goMasterOptions()">Continue</button>
     </div>
@@ -437,7 +436,6 @@ function renderMaster(){
   };
   document.getElementById("masterTub").innerHTML = group("tub", "No tub", "Keep your current tub or shower setup");
   document.getElementById("masterLayout").innerHTML = group("layout", "Keep your layout", "No changes to where fixtures sit");
-  document.getElementById("masterTotal").textContent = money(totalNow());
 }
 
 function pickGroup(key, id){
