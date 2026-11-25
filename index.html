@@ -68,6 +68,9 @@ label.opt input{accent-color:#c0c0c0}
 #about > button{padding:22px;font-size:20px;margin-top:6px;background:#c62828;color:#fff}
 .pickrow{display:flex;flex-wrap:wrap;gap:18px;margin-bottom:6px}
 .choice{width:auto;background:var(--c,#2a2a2a);color:var(--t,#e0e0e0);border:3px solid transparent;padding:20px 28px;font-size:19px;font-weight:600;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.vtile{width:auto;background:#fff;color:#000;border:3px solid transparent;border-radius:12px;padding:8px;font-size:16px;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.vtile img{width:180px;height:180px;object-fit:cover;border-radius:8px;display:block;margin:0 auto 8px}
+.vtile.on{border-color:#1f6fb2;box-shadow:0 0 0 3px #1f6fb2,0 2px 6px rgba(0,0,0,.4)}
 .choice.on{border-color:#fff;box-shadow:0 0 0 3px #1f6fb2,0 2px 6px rgba(0,0,0,.4)}
 .pill{display:inline-block;background:#222;color:#e0e0e0;border:1px solid #555;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:600;margin:4px 6px 4px 0}
 </style>
@@ -98,7 +101,7 @@ label.opt input{accent-color:#c0c0c0}
     <button class="back" onclick="show('step1')">← Back to packages</button>
     <h2>Choose your finish</h2>
     <div id="finishes" class="pickrow"></div>
-    <h2 style="margin-top:22px">Choose a bathroom style color</h2>
+    <h2 id="styleHead" style="margin-top:22px">Choose a bathroom style color</h2>
     <div id="styles" class="pickrow"></div>
     <h2 style="margin-top:22px">How long have you been thinking about renovating?</h2>
     <div id="timeline" class="pickrow"></div>
@@ -245,7 +248,7 @@ function renderPackages(){
 }
 
 function choose(key){
-  current = key; picked = new Set();
+  current = key; picked = new Set(); bathStyle = null;
   const p = PACKAGES[key];
   document.getElementById("pkgTitle").textContent = `2. Add options to: ${p.name}`;
   renderFinish();
@@ -315,13 +318,18 @@ const STYLES = ["White", "Grey", "Blue", "Brown"];
 const FINISH_COLORS = {"Chrome":["linear-gradient(100deg,#6f7780 0%,#e9edf1 22%,#9aa3ad 42%,#ffffff 55%,#b4bcc5 72%,#6f7780 100%)","#000"],"Brushed Nickel":["linear-gradient(90deg,#2b2b2b 0%,#5c5c5c 18%,#353535 36%,#707070 54%,#3a3a3a 72%,#606060 88%,#2b2b2b 100%)","#fff"],"Matte Black":["#1a1a1a","#fff"]};
 const STYLE_COLORS = {"White":["#ffffff","#000"],"Grey":["#5a6b7b","#fff"],"Blue":["#1f6fb2","#fff"],"Brown":["#8b5a2b","#fff"]};
 let bathStyle = null;
+const VANITIES = [["White","photos/vanity-white.jpg"],["Grey","photos/vanity-grey.jpg"],["Blue","photos/vanity-blue.jpg"],["Brown","photos/vanity-brown.jpg"]];
 let finish = null, timeframe = null;
 
 function renderFinish(){
   document.getElementById("finishes").innerHTML = FINISHES.map(f =>
     `<button class="choice ${finish === f ? "on" : ""}" style="--c:${FINISH_COLORS[f][0]};--t:${FINISH_COLORS[f][1]}" onclick="setFinish('${f}')">${f}</button>`).join("");
-  document.getElementById("styles").innerHTML = STYLES.map(s =>
-    `<button class="choice ${bathStyle === s ? "on" : ""}" style="--c:${STYLE_COLORS[s][0]};--t:${STYLE_COLORS[s][1]}" onclick="setStyle('${s}')">${s}</button>`).join("");
+  const isPrimary = current === "primary";
+  document.getElementById("styleHead").style.display = isPrimary ? "" : "none";
+  document.getElementById("styles").style.display = isPrimary ? "" : "none";
+  document.getElementById("styleHead").textContent = "Choose a vanity color";
+  document.getElementById("styles").innerHTML = isPrimary ? VANITIES.map(([n,src]) =>
+    `<button class="vtile ${bathStyle === n ? "on" : ""}" onclick="setStyle('${n}')"><img src="${src}" alt="${n} vanity">${n}</button>`).join("") : "";
   document.getElementById("timeline").innerHTML = TIMELINES.map(t =>
     `<button class="choice ${timeframe === t ? "on" : ""}" style="--c:#2e7d32;--t:#fff" onclick="setTime('${t}')">${t}</button>`).join("");
   document.getElementById("start").innerHTML = START_OPTIONS.map(t =>
@@ -332,7 +340,7 @@ function setFinish(f){ finish = f; document.getElementById("finishMsg").textCont
 function setStyle(s){ bathStyle = s; document.getElementById("finishMsg").textContent = ""; renderFinish(); }
 function setTime(t){ timeframe = t; document.getElementById("finishMsg").textContent = ""; renderFinish(); }
 function goOptions(){
-  if (!finish || !bathStyle || !timeframe || !startWhen){
+  if (!finish || (current === "primary" && !bathStyle) || !timeframe || !startWhen){
     document.getElementById("finishMsg").textContent = "Please choose a finish, a style color, a timeframe, and a start time to continue.";
     return;
   }
@@ -351,7 +359,7 @@ function summaryText(){
   const lines = selectedOptions().map(o => `${o.name} (${money(o.price)})`);
   return {
     package: `${p.name} from ${money(p.base)}`,
-    options: `Finish: ${finish}. Style: ${bathStyle}. Timeline: ${timeframe}. Start: ${startWhen}. ` + (lines.length ? lines.join("; ") : "No add-ons selected"),
+    options: `Finish: ${finish}. ` + (current === "primary" ? `Vanity: ${bathStyle}. ` : "") + `Timeline: ${timeframe}. Start: ${startWhen}. ` + (lines.length ? lines.join("; ") : "No add-ons selected"),
     total: money(totalNow())
   };
 }
