@@ -71,6 +71,10 @@ label.opt input{accent-color:#c0c0c0}
 .vtile{width:auto;background:#fff;color:#000;border:3px solid transparent;border-radius:12px;padding:8px;font-size:16px;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,.4)}
 .vtile img{width:180px;height:180px;object-fit:cover;border-radius:8px;display:block;margin:0 auto 8px}
 .vtile.on{border-color:#1f6fb2;box-shadow:0 0 0 3px #1f6fb2,0 2px 6px rgba(0,0,0,.4)}
+.finance{margin-top:6px}
+.fsmall{font-size:14px;color:#999}
+.fbig{font-size:26px;font-weight:700;color:#e0e0e0}
+.ffine{font-size:11px;color:#999;max-width:420px;line-height:1.35}
 .choice.on{border-color:#fff;box-shadow:0 0 0 3px #1f6fb2,0 2px 6px rgba(0,0,0,.4)}
 .pill{display:inline-block;background:#222;color:#e0e0e0;border:1px solid #555;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:600;margin:4px 6px 4px 0}
 </style>
@@ -120,6 +124,11 @@ label.opt input{accent-color:#c0c0c0}
       <div>
         <div class="note">Your estimate will appear soon.</div>
         <div class="total" id="total2" style="display:none">$0</div>
+        <div class="finance">
+          <div class="fsmall">Cash price <span id="cashPrice">$0</span></div>
+          <div class="fbig"><span id="finPmt">$0</span>/mo financed</div>
+          <div class="ffine">Estimate only, not a loan offer or a guarantee of financing. Subject to credit approval by the lender, and a down payment may be required. The 9.9% APR and 84-month term are examples only; your actual rate, term, and payment are set by the lender and may differ.</div>
+        </div>
       </div>
       <button style="width:auto;padding:12px 18px" onclick="goContact()">Continue</button>
     </div>
@@ -305,8 +314,15 @@ function totalNow(){
   return p.base + selectedOptions().reduce((s,o)=>s+o.price, 0);
 }
 
+function monthlyPayment(P){
+  const r = 0.099/12, n = 84;
+  return Math.round(P * r / (1 - Math.pow(1 + r, -n)));
+}
 function updateTotal(){
-  document.getElementById("total2").textContent = money(totalNow());
+  const t = totalNow();
+  document.getElementById("total2").textContent = money(t);
+  document.getElementById("cashPrice").textContent = money(t);
+  document.getElementById("finPmt").textContent = money(monthlyPayment(t));
 }
 
 /* ===== FINISH AND TIMELINE ===== */
@@ -360,7 +376,9 @@ function summaryText(){
   return {
     package: `${p.name} from ${money(p.base)}`,
     options: `Finish: ${finish}. ` + ((current === "primary" || current === "full") ? `Vanity: ${bathStyle}. ` : "") + `Timeline: ${timeframe}. Start: ${startWhen}. ` + (lines.length ? lines.join("; ") : "No add-ons selected"),
-    total: money(totalNow())
+    total: money(totalNow()),
+    cash: money(totalNow()),
+    monthly: money(monthlyPayment(totalNow())) + "/mo"
   };
 }
 
@@ -376,7 +394,7 @@ function sendPricing(){
 
   // Always show the result on screen first
   document.getElementById("sumPkg").textContent = s.package;
-  document.getElementById("sumTotal").textContent = "Estimated total: " + s.total;
+  document.getElementById("sumTotal").textContent = "Estimated total: " + s.total + " (about " + s.monthly + " financed, demo 9.9% APR, 84 months)";
   document.getElementById("sumList").innerHTML = selectedOptions().map(o => `<li>${o.name}: ${money(o.price)}</li>`).join("") || "<li>No add-ons selected</li>";
 
   const configured = EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY" && typeof emailjs !== "undefined";
@@ -389,7 +407,8 @@ function sendPricing(){
   emailjs.init(EMAILJS_PUBLIC_KEY);
   emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
     to_email: email, to_name: name, phone, address, notes,
-    package: s.package, options: s.options, total: s.total
+    package: s.package, options: s.options, total: s.total,
+    cash: s.cash, monthly: s.monthly, financing_terms: "Estimate only, not a loan offer or a guarantee of financing. Subject to credit approval by the lender, and a down payment may be required. The 9.9% APR and 84-month term are examples only; your actual rate, term, and payment are set by the lender and may differ."
   }).then(() => {
     status.innerHTML = `<div class="status ok">Sent to ${email}. Check your inbox.</div>`;
     show("step4");
