@@ -183,7 +183,7 @@ const PACKAGES = {
     ]
   },
   full: {
-    name: "Standard Full Bathroom", base: 16592, timeline: "About 7–10 days", fine: "Standard 5x8–5x10 bathrooms. 60 inch wet area, up to 36 in.", img: "",
+    name: "Standard Full Bathroom", base: 16592, timeline: "About 7–10 days", fine: "Standard 5x8–5x10 bathrooms. 60 inch wet area, up to 36 in.", img: "photos/pkg-full.jpg",
     desc: "Every surface new. One crew, one price, about a week.",
     included: ["Everything in the Tub-to-Shower Package", "Full room demolition with haul-away",
                "Glacier Bay vanity, countertop, undermount sink, matching faucet, chosen from our Glacier Bay selection", "Comfort-height, water-saving toilet installed and sealed",
@@ -256,7 +256,7 @@ function choose(key){
 }
 
 function tileShowerSelected(){
-  return current === "primary" ? !picked.has("flex") : picked.has("fulltile");
+  return (current === "primary" || current === "full") ? !picked.has("flex") : picked.has("fulltile");
 }
 
 function renderOptions(){
@@ -324,7 +324,7 @@ let finish = null, timeframe = null;
 function renderFinish(){
   document.getElementById("finishes").innerHTML = FINISHES.map(f =>
     `<button class="choice ${finish === f ? "on" : ""}" style="--c:${FINISH_COLORS[f][0]};--t:${FINISH_COLORS[f][1]}" onclick="setFinish('${f}')">${f}</button>`).join("");
-  const isPrimary = current === "primary";
+  const isPrimary = (current === "primary" || current === "full");
   document.getElementById("styleHead").style.display = isPrimary ? "" : "none";
   document.getElementById("styles").style.display = isPrimary ? "" : "none";
   document.getElementById("styleHead").textContent = "Choose a vanity color";
@@ -340,7 +340,7 @@ function setFinish(f){ finish = f; document.getElementById("finishMsg").textCont
 function setStyle(s){ bathStyle = s; document.getElementById("finishMsg").textContent = ""; renderFinish(); }
 function setTime(t){ timeframe = t; document.getElementById("finishMsg").textContent = ""; renderFinish(); }
 function goOptions(){
-  if (!finish || (current === "primary" && !bathStyle) || !timeframe || !startWhen){
+  if (!finish || ((current === "primary" || current === "full") && !bathStyle) || !timeframe || !startWhen){
     document.getElementById("finishMsg").textContent = "Please choose a finish, a style color, a timeframe, and a start time to continue.";
     return;
   }
@@ -359,7 +359,7 @@ function summaryText(){
   const lines = selectedOptions().map(o => `${o.name} (${money(o.price)})`);
   return {
     package: `${p.name} from ${money(p.base)}`,
-    options: `Finish: ${finish}. ` + (current === "primary" ? `Vanity: ${bathStyle}. ` : "") + `Timeline: ${timeframe}. Start: ${startWhen}. ` + (lines.length ? lines.join("; ") : "No add-ons selected"),
+    options: `Finish: ${finish}. ` + ((current === "primary" || current === "full") ? `Vanity: ${bathStyle}. ` : "") + `Timeline: ${timeframe}. Start: ${startWhen}. ` + (lines.length ? lines.join("; ") : "No add-ons selected"),
     total: money(totalNow())
   };
 }
