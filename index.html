@@ -117,9 +117,26 @@ label.opt input{accent-color:#c0c0c0}
     <button onclick="goOptions()" style="margin-top:14px">Continue</button>
   </section>
 
+  <!-- MASTER BATH: TUB AND LAYOUT -->
+  <section id="master" class="hidden">
+    <button class="back" onclick="show('finish')">← Back to finish</button>
+    <h2>Tub and layout</h2>
+    <h3 style="margin:16px 0 8px">Tub</h3>
+    <div id="masterTub"></div>
+    <h3 style="margin:16px 0 8px">Layout</h3>
+    <div id="masterLayout"></div>
+    <div class="sticky">
+      <div>
+        <div class="note">Choose one option in each group, or keep the included default.</div>
+        <div class="total" id="masterTotal">$0</div>
+      </div>
+      <button style="width:auto;padding:12px 18px" onclick="goMasterOptions()">Continue</button>
+    </div>
+  </section>
+
   <!-- STEP 2: OPTIONS -->
   <section id="step2" class="hidden">
-    <button class="back" onclick="show('finish')">← Back to finish</button>
+    <button class="back" onclick="backFromOptions()">← Back</button>
     <h2 id="pkgTitle"></h2>
     <div id="options"></div>
     <div class="sticky">
@@ -225,8 +242,10 @@ const PACKAGES = {
                "Tile flooring over a leveled, prepped subfloor", "Recessed ceiling lighting and vented exhaust fan", "Full painting and coordinated hardware", "High-quality Delta valves"],
     options: [
       {id:"flex", name:"Sentrel walls instead of tile", desc:"Panel walls instead of tile in the shower", price:-4148, img:"photos/primary-flex.jpg"},
-      {id:"reshape", name:"Reshape the wet zone", desc:"Expand the shower", price:2593, img:"photos/primary-reshape.jpg", excl:"layout"},
-      {id:"freestanding", name:"Freestanding soaking tub", desc:"With floor or wall mounted filler", price:4148, img:"photos/primary-freestanding.jpg", excl:"tub"},
+      {id:"tub_modern", page:"tub", name:"Modernize existing tub", desc:"New tiled deck", price:2000},
+      {id:"tub_free", page:"tub", name:"Freestanding soaking tub", desc:"With floor-mounted filler", price:4000},
+      {id:"layout_reshape", page:"layout", name:"Reshape the wet zone", desc:"Expand the shower, go curbless, or shift one fixture", price:2500},
+      {id:"layout_full", page:"layout", name:"Full reconfiguration", desc:"Move any or all fixtures to a new layout", price:8500},
       {id:"shower2", name:"Second shower system", desc:"Second showerhead and valve or wall jets", price:2281, img:"photos/primary-shower2.jpg"},
       {id:"schluter", name:"Upgraded waterproofing for limited lifetime warranty and extra 5 yr workmanship warranty", desc:"Schluter edging and Kerdi backing and waterproofing.<br><small style='font-size:12px;opacity:.85'>Warranty applies when the full Schluter system is installed with Schluter thin-set mortar (Schluter-SET, Schluter-ALL-SET, or Schluter-FAST-SET).</small>", price:1311, img:"", tileOnly:true},
       {id:"niche", name:"Extra storage niche", desc:"Framed, waterproofed, and tiled", price:881, img:"photos/primary-niche.jpg"},
@@ -243,7 +262,7 @@ let picked = new Set();  // selected option ids
 function money(n){ return (n < 0 ? "−" : "") + "$" + Math.abs(n).toLocaleString("en-US"); }
 
 function show(step){
-  ["about","step1","finish","step2","step3","step4"].forEach(s => document.getElementById(s).classList.toggle("hidden", s !== step));
+  ["about","step1","finish","master","step2","step3","step4"].forEach(s => document.getElementById(s).classList.toggle("hidden", s !== step));
   window.scrollTo(0,0);
 }
 
@@ -277,7 +296,7 @@ function tileShowerSelected(){
 
 function renderOptions(){
   const p = PACKAGES[current];
-  document.getElementById("options").innerHTML = p.options.filter(o => !o.tileOnly || tileShowerSelected()).map(o => `
+  document.getElementById("options").innerHTML = p.options.filter(o => (!o.tileOnly || tileShowerSelected()) && !o.page).map(o => `
     <div class="card ${picked.has(o.id)?"on":""}">
       <img src="${o.img}" alt="${o.name}" onerror="this.style.display='none'">
       <div class="body">
@@ -367,8 +386,52 @@ function goOptions(){
     document.getElementById("finishMsg").textContent = "Please choose a finish, a style color, a timeframe, and a start time to continue.";
     return;
   }
+  if (current === "primary"){
+    renderMaster();
+    show("master");
+    return;
+  }
   renderOptions();
   show("step2");
+}
+
+/* ===== MASTER BATH: TUB AND LAYOUT PAGE ===== */
+function renderMaster(){
+  const p = PACKAGES[current];
+  const card = (o, on, onclick, price) => `
+    <div class="card ${on?"on":""}" style="cursor:pointer" onclick="${onclick}">
+      ${o.img ? `<img src="${o.img}" alt="${o.name}" onerror="this.style.display='none'">` : ""}
+      <div class="body">
+        <div class="row"><div class="name">${o.name}</div><div class="price">${price}</div></div>
+        ${o.desc ? `<div class="desc">${o.desc}</div>` : ""}
+      </div>
+    </div>`;
+  const group = (key, defaultName, defaultDesc) => {
+    const opts = p.options.filter(o => o.page === key);
+    const anyPicked = opts.some(o => picked.has(o.id));
+    return card({name: defaultName, desc: defaultDesc}, !anyPicked, `pickGroup('${key}', null)`, "Included")
+      + opts.map(o => card(o, picked.has(o.id), `pickGroup('${key}', '${o.id}')`, "+" + money(o.price))).join("");
+  };
+  document.getElementById("masterTub").innerHTML = group("tub", "No tub", "Keep your current tub or shower setup");
+  document.getElementById("masterLayout").innerHTML = group("layout", "Keep your layout", "No changes to where fixtures sit");
+  document.getElementById("masterTotal").textContent = money(totalNow());
+}
+
+function pickGroup(key, id){
+  const p = PACKAGES[current];
+  p.options.filter(o => o.page === key).forEach(o => picked.delete(o.id));
+  if (id) picked.add(id);
+  renderMaster();
+}
+
+function goMasterOptions(){
+  renderOptions();
+  show("step2");
+}
+
+function backFromOptions(){
+  if (current === "primary") { renderMaster(); show("master"); }
+  else show("finish");
 }
 
 function goContact(){
