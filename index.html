@@ -505,6 +505,16 @@ function sendPricing(){
   ].map(i => `<li>${i}</li>`).join("");
   document.getElementById("sumList").innerHTML = selectedOptions().map(o => `<li>${o.name}: ${money(o.price)}</li>`).join("") || "<li>No add-ons selected</li>";
 
+  // Save each estimate as a row in the "Estimate Leads" Google Sheet (via the linked Google Form)
+  const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSch5PJ2HrrPeuE6p1RTHbx8jqlMFWzboROb4a-W1IOuruw4dQ/formResponse";
+  const leadData = new URLSearchParams({
+    "entry.1152343830": name, "entry.53926237": email, "entry.1058302648": phone,
+    "entry.348685970": address, "entry.594142146": s.package, "entry.783910629": s.options,
+    "entry.1533937115": s.cash, "entry.1554938495": s.monthly, "entry.771088896": notes,
+    "entry.1852232662": document.getElementById("consent").checked ? "Yes" : "No"
+  });
+  fetch(FORM_URL, { method: "POST", mode: "no-cors", body: leadData }).catch(() => {});
+
   const configured = EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY" && typeof emailjs !== "undefined";
   if (!configured){
     status.innerHTML = `<div class="status bad">Email is not set up yet. Your estimate is shown below.</div>`;
