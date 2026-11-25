@@ -82,6 +82,21 @@ label.opt input{accent-color:#c0c0c0}
 .ffine{font-size:11px;color:#999;max-width:420px;line-height:1.35}
 .choice.on{border-color:#fff;box-shadow:0 0 0 3px #1f6fb2,0 2px 6px rgba(0,0,0,.4)}
 .pill{display:inline-block;background:#222;color:#e0e0e0;border:1px solid #555;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:600;margin:4px 6px 4px 0}
+
+/* ---- site polish: hover, entry, photo zoom (no tilt, carousels or auto-rotation) ---- */
+@keyframes heroIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#about{animation:heroIn .6s ease-out both;min-height:calc(100vh - 110px);display:flex;flex-direction:column;justify-content:center}
+#about .card{overflow:hidden}
+#about .card img{transition:transform .5s ease}
+#about .card:hover img{transform:scale(1.03)}
+.card{transition:transform .2s ease,box-shadow .2s ease}
+#packages .card:hover,.card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.card img{transition:transform .5s ease}
+.card:hover img{transform:scale(1.03)}
+button{transition:transform .15s ease,filter .15s ease}
+button:hover{filter:brightness(1.08);transform:translateY(-1px)}
+button:active{transform:translateY(1px) scale(.98)}
+@media (prefers-reduced-motion:reduce){#about,#about .card img,.card,.card img,button{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -192,7 +207,7 @@ label.opt input{accent-color:#c0c0c0}
   </section>
 </main>
 <footer style="max-width:640px;margin:0 auto;padding:16px;color:#999;font-size:13px;text-align:center;border-top:1px solid #333">
-  (504) 261-8542 · Louisiana Residential License RL.89598 · <a href="privacy.html" style="color:inherit">Privacy Policy</a>
+  (504) 261-8542 · Louisiana Residential License RL.89598 · <a href="privacy.html" style="color:inherit">Privacy Policy</a><br><span style="font-size:12px">Photos: Silver Construction project photography and stock images.</span>
 </footer>
 
 <script>
