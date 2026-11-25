@@ -314,7 +314,7 @@ function choose(key){
 }
 
 function tileShowerSelected(){
-  return (current === "primary" || current === "full") ? !picked.has("flex") : picked.has("fulltile");
+  return picked.has("fulltile") || !picked.has("flex");
 }
 
 function renderOptions(){
