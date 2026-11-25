@@ -189,7 +189,7 @@ const PACKAGES = {
       {id:"fulltile", name:"Full tile walls", desc:"Tile on the shower walls instead of panels<br><small style='font-size:12px;opacity:.85'>Tile sizes: 12x24 and 24x48. Tile or regular walls up to 8 ft x 60 in.</small>", price:3630, img:"photos/full-fulltile.jpg"},
       {id:"schluter", name:"Upgraded waterproofing for limited lifetime warranty and extra 5 yr workmanship warranty", desc:"Schluter edging and Kerdi backing and waterproofing.<br><small style='font-size:12px;opacity:.85'>Warranty applies when the full Schluter system is installed with Schluter thin-set mortar (Schluter-SET, Schluter-ALL-SET, or Schluter-FAST-SET).</small>", price:1311, img:"", tileOnly:true},
       {id:"tileFloor", name:"Tile flooring instead of plank", desc:"Tile across the whole room", price:726, img:"photos/full-tilefloor.jpg"},
-      {id:"vanity2", name:"Double-sink vanity", desc:"Glacier Bay two-sink vanity with extra storage, chosen from our Glacier Bay selection", price:1556, img:"photos/full-vanity.jpg"},
+      {id:"vanity2", name:"Double-sink vanity", desc:"Glacier Bay two-sink vanity with extra storage, chosen from our Glacier Bay selection.<br><small style='font-size:12px;opacity:.85'>Must fit in your bathroom.</small>", price:1556, img:"photos/full-vanity.jpg"},
       {id:"recessed", name:"Recessed lighting package", desc:"Three to four ceiling lights on their own switch", price:1970, img:"photos/full-lighting.jpg", conflicts:["bundle"]},
       {id:"fan", name:"Upgraded exhaust fan", desc:"Quiet, high-capacity, vented outside", price:363, img:"photos/full-fan.jpg", conflicts:["bundle"]},
       {id:"bundle", name:"Light and Air Bundle", desc:"Recessed lighting plus upgraded fan (choose this OR the two above)", price:1970, img:"photos/full-bundle.jpg", conflicts:["recessed","fan"]},
@@ -312,7 +312,7 @@ const TIMELINES = ["1–3 months", "3–8 months", "8–24 months"];
 const START_OPTIONS = ["As soon as possible", "3–6 months", "Just checking for prices"];
 let startWhen = null;
 const STYLES = ["White", "Grey", "Blue", "Brown"];
-const FINISH_COLORS = {"Chrome":["#ffffff","#000"],"Brushed Nickel":["#3a3a3a","#fff"],"Matte Black":["#1a1a1a","#fff"]};
+const FINISH_COLORS = {"Chrome":["linear-gradient(100deg,#6f7780 0%,#e9edf1 22%,#9aa3ad 42%,#ffffff 55%,#b4bcc5 72%,#6f7780 100%)","#000"],"Brushed Nickel":["linear-gradient(90deg,#2b2b2b 0%,#5c5c5c 18%,#353535 36%,#707070 54%,#3a3a3a 72%,#606060 88%,#2b2b2b 100%)","#fff"],"Matte Black":["#1a1a1a","#fff"]};
 const STYLE_COLORS = {"White":["#ffffff","#000"],"Grey":["#5a6b7b","#fff"],"Blue":["#1f6fb2","#fff"],"Brown":["#8b5a2b","#fff"]};
 let bathStyle = null;
 let finish = null, timeframe = null;
